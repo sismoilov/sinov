@@ -36,11 +36,11 @@ fs.readFile("database/user.json", "utf-8", (err, data) => {
 
 
  app.get("/", function(req, res) {
-   res.render("harid");
+   res.render("reja");
  });
 
  const server = http.createServer(app);
  let port = 3000;
  server.listen(port, function() {
-   console.log(`Server is running on port:  ${port}`);
- });   
+   console.log(`Server is running on port:  ${port}, http://localhost:${port}`);
+ });     
