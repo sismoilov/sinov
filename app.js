@@ -27,20 +27,29 @@ app.set("view engine", "ejs");
 // });
 app.post("/create-item",  (req, res) => {
   console.log(req.body);
-  res.end("successfully");
-  res.json({test: "successfully"});
+  const new_reja = req.body.reja;
+  db.collection("plans").insertOne({reja: new_reja}, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.end("smth went wrong");
+    } else {
+     res.end("successfully added");
+    }
+  } );
+  // res.end("successfully");
+  // res.json({test: "successfully"});
 });
 
-app.get("/", function (req, res) {
+app.get("/", function ( req , res)  {
   db.collection("plans")
     .find()
-    .toArray((err,data) => {
+    .toArray((err, data) => {
     if (err) {
       console.log(err);
       res.end("smth went wrong");
     } else {
       console.log(data);
-      res.render("reja");
+      res.render("reja", {items: data});
     }
   });
   res.render("reja");

@@ -5,19 +5,22 @@ const connectionString = "mongodb+srv://williamismoilov:RO2emViObmvHM2Ok@cluster
 
 mongodb.connect(connectionString, { 
     useNewUrlParser: true, 
-    useUnifiedTopology: true }, 
+    useUnifiedTopology: true}, 
     (err, client) => {
   if (err) {
     console.log("mongodb da xato bor:",err);
   } else {
     console.log("mongodbga ulanish hosil qilindi");
-    module.exports = client;
+   module.exports  = client;
     const app = require("./app");
     const server = http.createServer(app);
 let PORT = 3000;
 server.listen(PORT, () => {
-  console.log(`Server is running successfully on http://localhost:${PORT}, http://localhost:${PORT}/author`);
+  console.log(`Server is running successfully on http://localhost:${PORT}, `);
 } );
 
   }
 });
+
+
+
