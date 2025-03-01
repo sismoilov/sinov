@@ -17,7 +17,7 @@ fs.readFile("database/user.json", "utf-8", (err, data) => {
 
 // MongoDB chaqirish
 const db = require("./server").db();
-
+const mongodb = require("mongodb");
 
 
 // 1 kirish code 
@@ -38,17 +38,32 @@ app.post("/create-item", (req, res) => {
     const new_reja = req.body.reja;
     db.collection("plans").insertOne({reja: new_reja}, (err, data) => {
       console.log( data.ops);
-      res.json(data.ops[0])  
+      res.json(data.ops[0]) ; 
 
     });
    // res.json({test:"succes"});
 });
 
-
-
-app.get("/author", (req, res) => {
-    res.render("author", { user:users });
+app.post("/delete-item", (req, res) => {
+  const id = req.body.id;
+  db.collection("plans").deleteOne({_id: new mongodb.ObjectId(id)}, function(err, data){
+    res.json({state: "success"});
+  })
 });
+
+app.post("/edit-item", (req, res) => {
+    const data = req.body;
+    console.log(data);
+    db.collection("plans").findOneAndUpdate({id: new mongodb.ObjectId(data.id)}, {$set: {reja: data.new_input}}, function(err, data) {
+        res.json({state: "success"});
+    })
+    res.end("tamom")
+})
+
+// app.get("/author", (req, res) => {
+//     res.render("author", { user:users });
+// });
+
 
 
 app.get("/", function (req, res) {
