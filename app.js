@@ -44,21 +44,43 @@ app.post("/create-item", (req, res) => {
    // res.json({test:"succes"});
 });
 
+//  ochirish tugmasi uchun  yozilgan code
 app.post("/delete-item", (req, res) => {
-  const id = req.body.id;
-  db.collection("plans").deleteOne({_id: new mongodb.ObjectId(id)}, function(err, data){
-    res.json({state: "success"});
-  })
+    console.log("user entered /delete-item");
+    const id = req.body.id;
+    db.collection("plans").deleteOne({ _id: new mongodb.ObjectID(id) }, (err, data) => {
+        if (err) {
+            console.log("ERROR: ", err);
+            res.end("something went wrong");
+        } else {
+            res.end("succes");
+        }
+    });
 });
 
+// ozgartirish tugmasi uchun  yozilgan code
 app.post("/edit-item", (req, res) => {
-    const data = req.body;
-    console.log(data);
-    db.collection("plans").findOneAndUpdate({id: new mongodb.ObjectId(data.id)}, {$set: {reja: data.new_input}}, function(err, data) {
-        res.json({state: "success"});
-    })
-    res.end("tamom")
-})
+    console.log("user entered /edit-item");
+    const id = req.body.id;
+    const reja = req.body.reja;
+    db.collection("plans").updateOne({ _id: new mongodb.ObjectID(id) }, { $set: { reja: reja } }, (err, data) => {
+        if (err) {
+            console.log("ERROR: ", err);
+            res.end("something went wrong");
+        } else {
+            res.end("succes");
+        }
+    });
+});
+
+// hammasini ochirish tugmasi uchun  yozilgan code
+app.post("/delete-all", (req, res) => {
+    if(req.body.delete_all) {
+        db.collection("plans").deleteMany(function () {
+            res.json({state:"hamma rejalar ochirildi"});
+        });
+    }
+});
 
 // app.get("/author", (req, res) => {
 //     res.render("author", { user:users });
